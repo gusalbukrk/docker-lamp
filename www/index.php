@@ -1,49 +1,34 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>Hello...</title>
-
-    <meta charset="utf-8">
-
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 
 <body>
-    <div class="container">
-        <?php echo "<h1>Hi! I'm happy</h1>"; ?>
+  <?php
+  $req = $_SERVER['REQUEST_URI'];
 
-        <?php
+  echo $req . "</br>";
+  echo $_SERVER['HTTP_HOST'] . "</br>";
 
-        // Connexion et sélection de la base
-        $conn = mysqli_connect('db', 'user', 'pass', "db");
+  switch ($req) {
+    case "":
+    case "/":
+      require __DIR__ . '/views/index.php';
+      break;
+    case "/about":
+      require __DIR__ . '/views/about.php';
+      break;
+    default:
+      http_response_code(404);
+      require __DIR__ . '/views/404.php';
+  }
 
-
-        $query = 'SELECT * From Person';
-        $result = mysqli_query($conn, $query);
-
-        echo '<table class="table table-striped">';
-        echo '<thead><tr><th></th><th>id</th><th>name</th></tr></thead>';
-        while ($value = $result->fetch_array(MYSQLI_ASSOC)) {
-            echo '<tr>';
-            echo '<td><a href="#"><span class="glyphicon glyphicon-search"></span></a></td>';
-            foreach ($value as $element) {
-                echo '<td>' . $element . '</td>';
-            }
-
-            echo '</tr>';
-        }
-        echo '</table>';
-
-        /* Libération du jeu de résultats */
-        $result->close();
-
-        mysqli_close($conn);
-
-        ?>
-    </div>
+  ?>
 </body>
 
 </html>
